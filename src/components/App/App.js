@@ -1,17 +1,25 @@
 import React, {useState} from "react";
 import Game from '../Game';
-import Guesses from '../Guesses';
+import GuessContainer from '../GuessContainer';
 import Header from '../Header';
+import { range } from "../../utils";
+import { NUM_OF_GUESSES_ALLOWED } from "../../constants";
 
 function App() {
   const [guesses, setGuesses] = useState([]);
+  let empty = range(0, 6 - guesses.length);
 
   function handleAddGuess(guess) {
-    let newGuess = {
-      word: guess,
-      id: crypto.randomUUID()
+    if (guesses.length < NUM_OF_GUESSES_ALLOWED) {
+      let newGuess = {
+        word: guess,
+        id: crypto.randomUUID()
+      }
+      setGuesses([...guesses, newGuess]);
+    } else {
+      window.alert("You've used all of your guesses!");
     }
-    setGuesses([...guesses, newGuess]);
+    
   }
 
   return (
@@ -20,7 +28,7 @@ function App() {
 
       <div className="game-wrapper">
         <Game handleAddGuess={handleAddGuess} />
-        <Guesses guesses={guesses} />
+        <GuessContainer guesses={guesses} empty={empty} />
       </div>
     </div>
   );
