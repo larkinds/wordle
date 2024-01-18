@@ -1,10 +1,14 @@
 import React from 'react';
 import { checkGuess } from '../../game-helpers';
 
-export default function Guess({ guess, answer }) {
+export default function Guess({ guess, answer , setGameStatus}) {
     let letters;
     if (guess.length > 0) {
         letters = checkGuess(guess, answer);
+        let winningGuess = letters.every((letter) => letter.status === 'correct');
+        if (winningGuess) {
+          setGameStatus("won")
+        }
     } else {
         letters = new Array(5).fill("");
     }
@@ -22,7 +26,6 @@ export default function Guess({ guess, answer }) {
       return replacementLetter;
   })
 
-  console.log(letters)
 
   return (
     <p className="guess">
